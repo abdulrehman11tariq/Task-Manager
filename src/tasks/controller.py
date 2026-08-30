@@ -14,3 +14,9 @@ def create_task(tasks: TaskCreate, db: Session):
     db.refresh(new_task)
 
     return {"message": "Task created successfully!", "task": new_task}
+
+def get_tasks(db: Session):
+
+    tasks = db.query(Task).all()
+    
+    return {"message": "Tasks retrieved successfully!", "tasks": tasks}
