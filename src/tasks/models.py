@@ -8,3 +8,4 @@ class Task(base):
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
     completed = Column(Boolean, default=False)
+

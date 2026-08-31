@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from src.tasks.controller import create_task, get_tasks
+from src.tasks.controller import create_task, get_tasks , get_one_task
 from src.tasks.dtos import TaskCreate
 from src.utils.db import get_db
 
@@ -14,3 +14,7 @@ def create_task_endpoint(task: TaskCreate , db = Depends(get_db)):
 def get_tasks_endpoint(db = Depends(get_db)):
 
     return get_tasks(db)
+
+@task_routes.get("/get_task/{task_id}")
+def get_one_task_endpoint(task_id: int , db = Depends(get_db)):
+    return get_one_task(db , task_id)
