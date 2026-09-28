@@ -4,3 +4,10 @@ class TaskCreate(BaseModel):
     title: str
     description: str
     completed: bool = False
+
+class TaskOut(TaskCreate):
+    id: int
+
+    title: str
+    description: str
+    completed: bool = False

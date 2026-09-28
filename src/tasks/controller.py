@@ -14,13 +14,13 @@ def create_task(tasks: TaskCreate, db: Session):
     db.commit()
     db.refresh(new_task)
 
-    return {"message": "Task created successfully!", "task": new_task}
+    return new_task
 
 def get_tasks(db: Session):
 
     tasks = db.query(Task).all()
     
-    return {"message": "Tasks retrieved successfully!", "tasks": tasks}
+    return tasks
 
 
 def get_one_task(db: Session , task_id: int):
@@ -30,7 +30,7 @@ def get_one_task(db: Session , task_id: int):
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
 
-    return {"message": "Task retrieved successfully!", "task": task}
+    return task
 
 def update_task(db: Session , task_id: int, body:TaskCreate):
 
@@ -48,7 +48,7 @@ def update_task(db: Session , task_id: int, body:TaskCreate):
     db.refresh(task)
 
 
-    return {"message": "Task updated successfully!", "task": task}
+    return task
 
 def delete_task(db: Session , task_id: int):
 
@@ -62,4 +62,4 @@ def delete_task(db: Session , task_id: int):
     db.commit()
     db.refresh(task)
 
-    return {"message": "Task deleted successfully!"}
+    return None
