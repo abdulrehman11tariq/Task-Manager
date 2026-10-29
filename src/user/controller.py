@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException , Request
 from src.user.dtos import userSchema
 from sqlalchemy.orm import Session
 from src.user.models import UserModel
@@ -57,3 +57,32 @@ def login(body: loginSchema , db:Session):
     token  = jwt.encode({"_id" : is_username.id , "exp" : exp_time } , settings.SECRET_KEY , settings.ALGORITHM)
 
     return {"token" : token}
+
+
+#data transfer using header as well
+def is_authenticated(request: Request , db: Session):
+    token = request.headers.get("Authorization")
+
+    tokken = token.split(" ")[-1]
+
+    if not token:
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        payload = jwt.decode(tokken, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+
+    userid = payload.get("_id")
+    exp = payload.get("exp")
+
+    if not userid or not exp or exp < datetime.now().timestamp():
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    user = db.query(UserModel).filter(UserModel.id == userid).first()
+   
+    if not user:
+        raise HTTPException(status_code=400, detail="User is invalid")
+
+    return {"id": user.id, "username": user.username, "email": user.email}
