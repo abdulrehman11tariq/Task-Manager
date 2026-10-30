@@ -2,6 +2,7 @@ from src.tasks.dtos import TaskCreate
 from sqlalchemy.orm import Session
 from src.tasks.models import Task
 from fastapi import HTTPException, status
+from src.utils.helpers import is_authenticated
 
 def create_task(tasks: TaskCreate, db: Session):
 
