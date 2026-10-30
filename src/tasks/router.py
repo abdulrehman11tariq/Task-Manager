@@ -15,7 +15,7 @@ task_routes = APIRouter(prefix="/tasks")
 @task_routes.post("/create" ,response_model=TaskOut, status_code = status.HTTP_201_CREATED)
 def create_task_endpoint(task: TaskCreate , db: Session = Depends(get_db) , user = Depends(is_authenticated)):
 
-    return create_task(task , db)
+    return create_task(task , db , user)
 
 
 #status code 2xx is for success and 4xx is for client error , we can set these status codes using status.HTTP_200_OK

@@ -11,3 +11,4 @@ class TaskOut(TaskCreate):
     title: str
     description: str
     completed: bool = False
+    user_id: int | None  = 0
